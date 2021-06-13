@@ -1,0 +1,68 @@
+digraph {
+_0 [label = "_"];
+a1 [label= "a"];
+_0 -> a1;
+_0 [label = "_"];
+b1 [label= "b"];
+_0 -> b1;
+a1 [label = "a"];
+l2 [label ="l"];
+a1 -> l2;
+a1 [label= "a"];
+t2 [label = "t"];
+a1 -> t2;
+l2 [label = "l"];
+p3 [label = "p"];
+l2 -> p3;
+p3 [label = "p"];
+h4 [label = "h"];
+p3 -> h4;
+p3 [label = "p"];
+s4 [label = "s"];
+p3 -> s4;
+h4 [label = "h"];
+a5 [label ="a"];
+h4 -> a5;
+
+
+b1 [label= "b"];
+e2 [label = "e"];
+b1 -> e2;
+e2 [label = "e"];
+a3 [label = "a"];
+e2 -> a3;
+e2 [label = "e"];
+e3 [label = "e"];
+e2 -> e3;
+e2 [label = "e"];
+r3 [label = "r"];
+e2 -> r3;
+a3 [label = "a"];
+n4 [label ="n"];
+a3 -> n4;
+a3 [label= "a"];
+s4 [label = "s"];
+a3 -> s4;
+
+
+s4 [label = "s"];
+t5 [label = "t"];
+s4 -> t5;
+
+
+e3 [label = "e"];
+n4 [label = "n"];
+e3 -> n4;
+
+
+r3 [label = "r"];
+n4 [label = "n"];
+r3 -> n4;
+n4 [label = "n"];
+i5 [label ="i"];
+n4 -> i5;
+i5 [label= "i"];
+e6 [label = "e"];
+i5 -> e6;
+
+}
