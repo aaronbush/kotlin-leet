@@ -36,6 +36,23 @@ if ("hello" !in myTrie) println("goodbye")
 
 More examples in the unit test. Also tracking issues/features to add in [TODO](TODO.md)
 
+Example of storing the words (end of word markers not shown yet):
+
+```kotlin
+val root = TrieNode()
+root += "alpha"
+root += "at"
+root += "alps"
+root += "bee"
+root += "been"
+root += "bean"
+root += "beast"
+root += "bernie"
+```
+
+![](diagrams/exampleGraph.png)
+
+Diagram of TrieNode structure.
 ![Diagram of TrieNode](diagrams/TrieNodeDesign.png)
 
 # Background
