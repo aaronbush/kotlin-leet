@@ -6,5 +6,6 @@ Features / Bugs TODO
 - [x] Add operator funs for +, -, +=, -=, in, !in.
 - [x] TrieNode ~~toString~~ toDotGraph that can output Dot (graphviz) view.
 - [ ] Cleanup toDotGraph()... logic is complex and outputs duplicate nodes.
+- [ ] Render the .drawio diagram and save in diagrams.
 
 # Bugs

@@ -34,7 +34,9 @@ if ("hello" !in myTrie) println("goodbye")
 
 ## Additional Information
 
-More examples in the unit test. Also tracking issues/features to add in TODO.md
+More examples in the unit test. Also tracking issues/features to add in [TODO](TODO.md)
+
+![Diagram of TrieNode](diagrams/TrieNodeDesign.png)
 
 # Background
 
