@@ -5,7 +5,7 @@ import mu.KotlinLogging
 private val logger = KotlinLogging.logger {}
 
 class TrieNode {
-    private companion object {
+    companion object {
         private const val ROOT_CHAR = '_'
 
         // Remap the ordinal values to array indexing values 0..25 for US Alphabet
@@ -21,6 +21,14 @@ class TrieNode {
 
         @JvmStatic
         private fun Int.toAlphaChar() = ordinalToLetter[this] ?: ROOT_CHAR
+
+        fun of(vararg words: String): TrieNode {
+            tailrec fun loop(words: Array<out String>, trieNode: TrieNode): TrieNode =
+                if (words.isEmpty()) trieNode
+                else loop(words.sliceArray(1 until words.size), (trieNode + words.first()))
+
+            return if (words.isEmpty()) TrieNode() else loop(words, TrieNode())
+        }
     }
 
     private val children = arrayOfNulls<TrieNode>(letterToOrdinal.size)
@@ -99,9 +107,9 @@ class TrieNode {
         }
     }
 
-    fun toDotGraph(): String {
-        return "digraph {\n ${toDotGraph(ROOT_CHAR.toAlphaNum()!!, 0)} }"
-    }
+    fun toDotGraph(): String =
+        "digraph {\n ${toDotGraph(ROOT_CHAR.toAlphaNum()!!, 0)} }"
+
 
     override fun toString(): String {
         val content = children.mapIndexed { i, v -> v?.let { i.toAlphaChar() } ?: '_' }.joinToString()

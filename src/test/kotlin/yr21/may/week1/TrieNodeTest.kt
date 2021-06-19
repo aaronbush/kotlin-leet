@@ -29,6 +29,14 @@ class TrieNodeTest {
     }
 
     @Test
+    fun `add many using _of_ helper`() {
+        val root = TrieNode.of("humanity", "java", "bean")
+        root.contains("humanity") shouldBe true
+        root.contains("java") shouldBe true
+        root.contains("bean") shouldBe true
+    }
+
+    @Test
     fun `remove many using arithmetic operators`() {
         val root = TrieNode()
         root + "humanity" + "java" + "bean"
