@@ -7,11 +7,12 @@ private val logger = KotlinLogging.logger {}
 class TrieNode {
     companion object {
         private const val ROOT_CHAR = '_'
+        private val OTHER_CHARS = listOf(' ', '.', '#')
 
         // Remap the ordinal values to array indexing values 0..25 for US Alphabet
         @JvmStatic
         private val letterToOrdinal =
-            (CharRange('a', 'z') + ROOT_CHAR).withIndex().associate { (index, value) -> value to index }
+            (('a'..'z').toList() + ROOT_CHAR + OTHER_CHARS).withIndex().associate { (index, value) -> value to index }
 
         @JvmStatic
         private val ordinalToLetter = letterToOrdinal.entries.associate { (k, v) -> v to k }

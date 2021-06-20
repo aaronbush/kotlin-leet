@@ -101,6 +101,14 @@ class TrieNodeTest {
         root - "java"
         ("java" in root) shouldBe false
     }
+    
+    @Test
+    fun `punctuation is mapped`() {
+        val root = TrieNode.of(".", " ", "#")
+        ("." in root) shouldBe true
+        (" " in root) shouldBe true
+        ("#" in root) shouldBe true
+    }
 
     @Test
     fun a() {

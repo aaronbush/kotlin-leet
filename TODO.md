@@ -7,5 +7,6 @@ Features / Bugs TODO
 - [x] TrieNode ~~toString~~ toDotGraph that can output Dot (graphviz) view.
 - [ ] Cleanup toDotGraph()... logic is complex and outputs duplicate nodes.
 - [ ] Render the .drawio diagram and save in diagrams.
+- [ ] Look into making this immutable data structure.
 
 # Bugs
