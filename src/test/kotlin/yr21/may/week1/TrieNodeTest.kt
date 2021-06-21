@@ -1,6 +1,7 @@
 package yr21.may.week1
 
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import org.junit.jupiter.api.Test
 
 class TrieNodeTest {
@@ -101,13 +102,25 @@ class TrieNodeTest {
         root - "java"
         ("java" in root) shouldBe false
     }
-    
+
     @Test
     fun `punctuation is mapped`() {
         val root = TrieNode.of(".", " ", "#")
         ("." in root) shouldBe true
         (" " in root) shouldBe true
         ("#" in root) shouldBe true
+    }
+
+    @Test
+    fun `get operator works`() {
+        val word = "apple"
+        val chars = word.toCharArray()
+        val root = TrieNode.of(word)
+        var node: TrieNode? = root
+        chars.forEach {
+            node = node!![it]
+            node shouldNotBe null
+        }
     }
 
     @Test
