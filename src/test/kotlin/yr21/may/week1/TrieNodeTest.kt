@@ -1,8 +1,10 @@
 package yr21.may.week1
 
+import io.kotest.matchers.collections.shouldContainAll
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import org.junit.jupiter.api.Test
+import java.io.File
 
 class TrieNodeTest {
 
@@ -124,6 +126,14 @@ class TrieNodeTest {
     }
 
     @Test
+    fun `removing prefix word doesnt impact longer overlapping word`() {
+        val root = TrieNode.of("alligator", "all")
+        root - "all"
+        ("alligator" in root) shouldBe true
+        ("all" in root) shouldBe false
+    }
+
+    //    @Test
     fun a() {
         val root = TrieNode()
         root += "alpha"
@@ -134,6 +144,29 @@ class TrieNodeTest {
         root += "bean"
         root += "beast"
         root += "bernie"
+        root['a']?.get('l')?.get('p')?.get('s')
         println(root.toDotGraph())
     }
+
+    @Test
+    fun `get paths`() {
+        val root = TrieNode.of("all", "alpha", "alps", "almost", "alan", "alligator")
+        val alNode = root['a']?.get('l')!!
+        val suffixes = alNode.pathsBeyond()
+        suffixes.shouldContainAll("l", "pha", "ps", "most", "an", "ligator")
+    }
+
+    //    @Test
+    fun load() {
+        val f = File("src/test/resources/words_alpha.txt")
+        val root = TrieNode()
+        f.forEachLine { root + it }
+        var checks = 0
+        f.forEachLine { word ->
+            (word in root) shouldBe true
+            checks++
+        }
+        println("performed $checks checks")
+    }
+
 }

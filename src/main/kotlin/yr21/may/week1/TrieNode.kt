@@ -41,14 +41,17 @@ class TrieNode {
     }
 
     operator fun plusAssign(word: String) {
-        if (word == "") return
+        if (word == "") {
+            this.endOfWord = true
+            return
+        }
         val nextLetter = word.drop(1)
-        val nextNode = this.add(word.first(), nextLetter == "")
+        val nextNode = this.add(word.first())
         nextNode += nextLetter
     }
 
-    private fun add(value: Char, endOfWord: Boolean): TrieNode {
-        logger.debug { "attempting to add $value and is ${if (endOfWord) "" else "not"} end of word" }
+    private fun add(value: Char): TrieNode {
+        logger.debug { "attempting to add $value" }
         val index = value.toAlphaNum() ?: throw IllegalArgumentException("Value: $value not supported")
         var nodeForValue = this[value]
 
@@ -56,7 +59,6 @@ class TrieNode {
             nodeForValue = TrieNode()
             this[index] = nodeForValue
         }
-        if (endOfWord) this.endOfWord = endOfWord
         return nodeForValue
     }
 
@@ -73,11 +75,13 @@ class TrieNode {
 
     private fun findEndOfWord(word: String): TrieNode? {
         logger.debug { "searching for '$word'" }
-        if (word == "") return null
+        if (word == "") {
+            return if (endOfWord) this else null
+        }
         val nextNode = this[word[0]] ?: return null
-        val nextWord = word.drop(1)
-        logger.debug { "found '${word[0]}' (end of a word=${endOfWord}) next is '$nextWord'" }
-        return if (nextWord == "" && this.endOfWord) this else nextNode.findEndOfWord(nextWord)
+        val remainingLetters = word.drop(1)
+        logger.debug { "found '${word[0]}' next is '$remainingLetters'" }
+        return nextNode.findEndOfWord(remainingLetters)
     }
 
     operator fun contains(word: String) = findEndOfWord(word) != null
@@ -88,6 +92,23 @@ class TrieNode {
 
     operator fun get(value: Char) =
         children[value.toAlphaNum() ?: throw IllegalArgumentException("Value: $value not supported")]
+
+    // from this node return all possible 'words'
+    fun pathsBeyond(): List<String> {
+        fun loop(node: TrieNode, chars: Array<Char>, words: MutableList<String>): List<String> {
+            logger.info { "from $node / accumulated: ${chars.joinToString(separator = "")}" }
+            if (node.endOfWord) {
+                logger.info { "end of word '${chars.joinToString(separator = "")}'" }
+                words.add(chars.joinToString(separator = ""))
+            }
+            if (node.children.filterNotNull().isNotEmpty()) {
+                node.children.mapIndexedNotNull { index, trieNode -> trieNode?.let { index to trieNode } }
+                    .forEach { pair -> loop(pair.second, chars + pair.first.toAlphaChar(), words) }
+            }
+            return words
+        }
+        return loop(this, emptyArray(), emptyList<String>().toMutableList())
+    }
 
     private fun toDotGraph(fromIndex: Int, level: Int): String {
         val valuesAt = children.mapIndexed { index, trieNode -> trieNode?.let { index } }.filterNotNull()
@@ -113,7 +134,7 @@ class TrieNode {
 
 
     override fun toString(): String {
-        val content = children.mapIndexed { i, v -> v?.let { i.toAlphaChar() } ?: '_' }.joinToString()
-        return "TrieNode(children=$content)"
+        val content = children.mapIndexed { i, v -> v?.let { i.toAlphaChar() } ?: '-' }.joinToString()
+        return "TrieNode(children=$content) eow: $endOfWord"
     }
 }
