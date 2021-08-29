@@ -1,5 +1,6 @@
 package yr21.may.week1
 
+import io.kotest.assertions.throwables.shouldThrowExactly
 import io.kotest.matchers.collections.shouldContainAll
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
@@ -37,6 +38,20 @@ class TrieNodeTest {
         root.contains("humanity") shouldBe true
         root.contains("java") shouldBe true
         root.contains("bean") shouldBe true
+    }
+
+    @Test
+    fun `unmapped characters will cause an exception on add`() {
+        shouldThrowExactly<IllegalArgumentException> {
+            TrieNode.of("😺")
+        }
+    }
+
+    @Test
+    fun `unmapped characters will cause an exception on get`() {
+        shouldThrowExactly<IllegalArgumentException> {
+            TrieNode.of("a")['\u0000']
+        }
     }
 
     @Test
@@ -145,7 +160,12 @@ class TrieNodeTest {
         root += "beast"
         root += "bernie"
         root['a']?.get('l')?.get('p')?.get('s')
-        println(root.toDotGraph())
+//        println(root.toDotGraph())
+
+        val c = fun(tn: TrieNode?, char: Char) = tn?.get(char)
+
+        println("alpha".fold(root, c) ?: "nothing")
+        println("alphabet".fold(root, c) ?: "nothing")
     }
 
     @Test
